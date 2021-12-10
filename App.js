@@ -79,7 +79,7 @@ const App: () => Node = () => {
   }
   const getLast25Commits = async () => {
      try {
-      const response = await fetch('https://api.github.com/repos/snigdha-n/latestrepocommits/commits');
+      const response = await fetch('https://api.github.com/repos/snigdha-n/latestrepocommits/commits?per_page=25');
       const json = await response.json();
       setData(json);
     } catch (error) {
