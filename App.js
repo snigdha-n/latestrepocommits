@@ -92,7 +92,7 @@ const App: () => Node = () => {
       getLast25Commits();
   }, []);
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={{flex:1, backgroundColor: "white"}}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
      
         <View
