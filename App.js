@@ -1,22 +1,24 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+// /**
+//  * Sample React Native App
+//  * https://github.com/facebook/react-native
+//  *
+//  * @format
+//  * @flow strict-local
+//  */
 
 import React from 'react';
+import {useEffect, useState} from "react";
 import type {Node} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
   View,
-} from 'react-native';
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 
 import {
   Colors,
@@ -26,87 +28,115 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
 
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-
+  const FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#900000",
+        }}
+      />
+    );
+  }
+  const FlatListHeader = () => {
+    return (
+      <View 
+      // elevation={1} 
+      
+        style={{
+          elevation:1,
+          height: 100,
+          width: "97%",
+          margin: 5,
+          backgroundColor: "#fff",
+          borderColor:'#d9d9d9',
+          borderWidth: 2,
+          // border: 2.9,
+          // borderColor: "black",
+          alignSelf: "center",
+          shadowColor: "#d9d9d9",
+          shadowOffset: {
+            width: 0,
+            height: 16,
+          },
+          shadowOpacity: 1,
+          shadowRadius: 7.49
+        }}
+      >
+        <Text style={{  textShadowColor: '#d9d9d9', textShadowOffset: { width: 1, height: 3 },textShadowRadius: 10, fontSize: 40, fontWeight: '800', flex: 1, alignSelf: "center", paddingTop: 30, fontSize: 40}}>Latest Commits</Text>
+      </View>
+    );
+  }
+  const getLast25Commits = async () => {
+     try {
+      const response = await fetch('https://api.github.com/repos/snigdha-n/ionicApp/commits');
+      const json = await response.json();
+      setData(json);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+    useEffect(() => {
+      getLast25Commits();
+  }, []);
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
+     
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+          }}
+          >
+
+<FlatList
+ data={data}
+           keyExtractor={({ sha }, index) => sha}
+           ListHeaderComponent = { FlatListHeader }   
+           ItemSeparatorComponent = { FlatListItemSeparator }
+           
+           renderItem={({ item }) => (
+            // <TouchableOpacity  style={[ false]}>
+             <Text selectable={false} style={styles.title}>{"\n"}{item.commit.author.name}{"\n"}{item.sha}{"\n"}{item.commit.message}{"\n"}</Text>
+         
+         
+              )}
+        
+      />
+       
         </View>
-      </ScrollView>
+  
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  
+  item: {
+       // marginLeft:100,
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+        backgroundColor:"#ffffff"
+      },
+      title: {
+        fontSize: 20,
+        left:10,
+        width:'80%'
+      },
 });
 
 export default App;
+
