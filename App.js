@@ -56,9 +56,9 @@ const App: () => Node = () => {
         style={{
           elevation:1,
           height: 100,
-          width: "97%",
-          margin: 5,
-          backgroundColor: "#fff",
+          width: "100%",
+          margin: 0,
+          backgroundColor: "white",
           borderColor:'#d9d9d9',
           borderWidth: 2,
           // border: 2.9,
@@ -73,7 +73,7 @@ const App: () => Node = () => {
           shadowRadius: 7.49
         }}
       >
-        <Text style={{  textShadowColor: '#d9d9d9', textShadowOffset: { width: 1, height: 3 },textShadowRadius: 10, fontSize: 40, fontWeight: '800', flex: 1, alignSelf: "center", paddingTop: 30, fontSize: 40}}>Latest Commits</Text>
+        <Text style={{  textShadowColor: '#d9d9d9', textShadowOffset: { width: 1, height: 3 },textShadowRadius: 10, fontSize: 40, fontWeight: '800', flex: 1, alignSelf: "center", paddingTop: 30, fontSize: 40,color:"#373737"}}>Latest Commits</Text>
       </View>
     );
   }
@@ -109,9 +109,10 @@ const App: () => Node = () => {
            
            renderItem={({ item }) => (
             // <TouchableOpacity  style={[ false]}>
+            <View style={{ backgroundColor: Colors.white }}>
              <Text selectable={false} style={styles.title}>{"\n"}{item.commit.author.name}{"\n"}{item.sha}{"\n"}{item.commit.message}{"\n"}</Text>
          
-         
+             </View>
               )}
         
       />
@@ -129,12 +130,13 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 18,
         height: 44,
-        backgroundColor:"#fff"
+        backgroundColor:"white"
       },
       title: {
         fontSize: 20,
         left:10,
-        width:'80%'
+        width:'80%',
+        color:"#373737"
       },
 });
 
