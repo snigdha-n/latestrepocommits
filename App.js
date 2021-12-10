@@ -79,7 +79,7 @@ const App: () => Node = () => {
   }
   const getLast25Commits = async () => {
      try {
-      const response = await fetch('https://api.github.com/repos/snigdha-n/ionicApp/commits');
+      const response = await fetch('https://api.github.com/repos/snigdha-n/latestrepocommits/commits');
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 18,
         height: 44,
-        backgroundColor:"#ffffff"
+        backgroundColor:"#fff"
       },
       title: {
         fontSize: 20,
